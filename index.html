@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>데스크 에이전트 랩</title>
+<meta name="description" content="FICC S&T 영업지원 AI 에이전트를 목업 데이터로 직접 만들어보는 실습형 입문 가이드">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ink:#131b2e;
+    --ink-soft:#3d4759;
+    --paper:#edefee;
+    --surface:#ffffff;
+    --teal:#2b6e62;
+    --teal-ink:#1d4d44;
+    --gold:#b07c3a;
+    --line:rgba(19,27,46,0.14);
+    --line-strong:rgba(19,27,46,0.28);
+    --shadow:0 1px 2px rgba(19,27,46,0.06);
+    --code-bg:#101826;
+    --code-ink:#dfe6e4;
+    --code-line:rgba(223,230,228,0.14);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#ede9de;
+      --ink-soft:#b9b4a6;
+      --paper:#0e1420;
+      --surface:#171f30;
+      --teal:#59b39f;
+      --teal-ink:#8fd2c1;
+      --gold:#d6a45c;
+      --line:rgba(237,233,222,0.14);
+      --line-strong:rgba(237,233,222,0.26);
+      --shadow:0 1px 2px rgba(0,0,0,0.35);
+      --code-bg:#0a0e16;
+      --code-ink:#dfe6e4;
+      --code-line:rgba(223,230,228,0.12);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#ede9de;
+    --ink-soft:#b9b4a6;
+    --paper:#0e1420;
+    --surface:#171f30;
+    --teal:#59b39f;
+    --teal-ink:#8fd2c1;
+    --gold:#d6a45c;
+    --line:rgba(237,233,222,0.14);
+    --line-strong:rgba(237,233,222,0.26);
+    --shadow:0 1px 2px rgba(0,0,0,0.35);
+    --code-bg:#0a0e16;
+    --code-ink:#dfe6e4;
+    --code-line:rgba(223,230,228,0.12);
+  }
+
+  *{box-sizing:border-box;}
+  html{background:var(--paper);}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans KR",-apple-system,sans-serif;
+    line-height:1.7;
+  }
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;}
+  h1,h2,h3{
+    font-family:"Noto Serif KR",serif;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  a{color:var(--teal-ink);}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- ticker ---------- */
+  .ticker{
+    background:var(--ink);
+    color:var(--paper);
+    overflow:hidden;
+    white-space:nowrap;
+    border-bottom:1px solid var(--line-strong);
+  }
+  .ticker__track{
+    display:inline-flex;
+    gap:40px;
+    padding:9px 0;
+    animation:scroll 34s linear infinite;
+  }
+  .ticker span{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;
+    letter-spacing:.02em;
+    opacity:.88;
+  }
+  .ticker .up{color:#7fd9c4;}
+  .ticker .down{color:#f0a48c;}
+  @keyframes scroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ticker__track{animation:none;}
+  }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    padding:64px 0 52px;
+    border-bottom:1px solid var(--line);
+  }
+  .memo-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 22px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    padding-bottom:22px;
+    margin-bottom:26px;
+    border-bottom:1px dashed var(--line-strong);
+  }
+  .memo-meta b{color:var(--gold);font-weight:600;}
+  h1.title{
+    font-size:clamp(30px,4.4vw,46px);
+    font-weight:700;
+    line-height:1.28;
+    max-width:16ch;
+  }
+  h1.title em{
+    font-style:normal;
+    color:var(--teal-ink);
+  }
+  .lede{
+    max-width:62ch;
+    margin-top:20px;
+    font-size:17px;
+    color:var(--ink-soft);
+  }
+  .pull{
+    margin-top:30px;
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:18px 22px;
+    max-width:62ch;
+    box-shadow:var(--shadow);
+  }
+  .pull .tag{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    letter-spacing:.06em;
+    color:var(--surface);
+    background:var(--teal);
+    padding:3px 8px;
+    border-radius:2px;
+    white-space:nowrap;
+    margin-top:3px;
+  }
+  .pull p{margin:0;font-size:15px;color:var(--ink);}
+  .pull p b{color:var(--teal-ink);}
+
+  /* ---------- section shell ---------- */
+  section{padding:56px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:10px;
+    display:block;
+  }
+  h2.h2{font-size:clamp(22px,3vw,28px);font-weight:600;max-width:26ch;}
+  .section-lede{max-width:62ch;color:var(--ink-soft);margin-top:12px;font-size:15.5px;}
+
+  /* ---------- why-now two col ---------- */
+  .why-grid{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:40px;
+    margin-top:32px;
+  }
+  .why-grid p{margin:0 0 14px;font-size:15.5px;}
+  .why-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:22px 24px;
+  }
+  .why-card h3{font-size:15px;font-family:"Noto Sans KR";font-weight:700;margin-bottom:8px;}
+  .why-card ul{margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-soft);}
+  .why-card li{margin-bottom:7px;}
+  @media (max-width:760px){.why-grid{grid-template-columns:1fr;}}
+
+  /* ---------- curriculum timeline ---------- */
+  .timeline{margin-top:36px;}
+  .mod{
+    display:grid;
+    grid-template-columns:76px 1fr;
+    gap:0 24px;
+  }
+  .mod__rail{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .mod__num{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:13px;
+    font-weight:600;
+    width:38px;height:38px;
+    border-radius:50%;
+    border:1.5px solid var(--line-strong);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-soft);
+    background:var(--surface);
+    flex-shrink:0;
+    z-index:1;
+  }
+  .mod.is-done .mod__num{
+    border-color:var(--teal);
+    color:var(--surface);
+    background:var(--teal);
+  }
+  .mod__line{
+    flex:1;
+    width:1.5px;
+    background:var(--line-strong);
+    margin:2px 0;
+  }
+  .mod:last-child .mod__line{display:none;}
+  .mod__body{padding-bottom:40px;}
+  .mod__top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .mod__label{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;
+    letter-spacing:.08em;
+    color:var(--gold);
+    text-transform:uppercase;
+  }
+  .mod__title{font-size:19px;font-weight:600;margin-top:4px;}
+  .mod__time{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  .mod__desc{margin-top:10px;font-size:15px;color:var(--ink-soft);max-width:60ch;}
+  .mod__scenario{
+    margin-top:16px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:3px solid var(--teal);
+    border-radius:0 3px 3px 0;
+    padding:14px 18px;
+    font-size:14px;
+  }
+  .mod__scenario b{
+    display:block;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--teal-ink);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  .mod__deliverable{
+    margin-top:14px;
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+  .mod__deliverable .chk{
+    appearance:none;
+    width:16px;height:16px;
+    border:1.5px solid var(--line-strong);
+    border-radius:3px;
+    flex-shrink:0;
+    margin-top:2px;
+    cursor:pointer;
+    display:grid;place-items:center;
+    background:var(--surface);
+  }
+  .mod__deliverable .chk:checked{background:var(--teal);border-color:var(--teal);}
+  .mod__deliverable .chk:checked::after{
+    content:"";
+    width:5px;height:9px;
+    border:solid var(--surface);
+    border-width:0 2px 2px 0;
+    transform:rotate(45deg) translate(-1px,-1px);
+  }
+  .mod__deliverable label{cursor:pointer;}
+
+  /* ---------- kit (experiential mock data) ---------- */
+  .kit-grid{margin-top:32px;display:grid;gap:20px;}
+  .kit-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .kit-card__head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    background:color-mix(in srgb, var(--surface) 92%, var(--ink) 8%);
+  }
+  .kit-card__head .name{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12.5px;
+    letter-spacing:.03em;
+    color:var(--ink-soft);
+  }
+  .kit-card__head .name b{color:var(--ink);font-weight:600;}
+  .copy-btn{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;
+    letter-spacing:.04em;
+    color:var(--teal-ink);
+    background:transparent;
+    border:1px solid var(--teal);
+    border-radius:3px;
+    padding:5px 11px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .copy-btn:hover{background:var(--teal);color:var(--surface);}
+  .copy-btn:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .kit-card pre{
+    margin:0;
+    padding:16px 18px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:13px;
+    line-height:1.75;
+    color:var(--code-ink);
+    background:var(--code-bg);
+    white-space:pre-wrap;
+    overflow-x:auto;
+  }
+  .kit-note{
+    margin-top:18px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    max-width:62ch;
+  }
+  .ba-grid{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  }
+  @media (max-width:760px){.ba-grid{grid-template-columns:1fr;}}
+  .ba-card__head .name{font-size:11.5px;}
+  .try-steps{
+    margin-top:18px;
+    display:grid;
+    gap:10px;
+  }
+  .try-steps li{font-size:14.5px;color:var(--ink-soft);}
+
+  /* ---------- faq ---------- */
+  .faq-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:30px;
+  }
+  .faq-item{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:18px 20px;
+  }
+  .faq-item .q{
+    font-weight:700;
+    font-size:14.5px;
+    margin-bottom:7px;
+    color:var(--ink);
+  }
+  .faq-item .q::before{content:"Q. ";color:var(--gold);}
+  .faq-item .a{font-size:14px;color:var(--ink-soft);}
+  @media (max-width:760px){.faq-grid{grid-template-columns:1fr;}}
+
+  /* ---------- closing ---------- */
+  .closing{
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .closing .eyebrow{color:var(--gold);}
+  .closing h2.h2{color:var(--paper);}
+  .closing .section-lede{color:var(--ink-soft);}
+  .next-list{
+    margin-top:28px;
+    display:grid;
+    gap:12px;
+  }
+  .next-item{
+    display:flex;
+    gap:14px;
+    align-items:baseline;
+    padding:14px 0;
+    border-bottom:1px solid rgba(237,233,222,0.14);
+  }
+  .next-item .n{
+    font-family:"IBM Plex Mono",monospace;
+    color:var(--gold);
+    font-size:13px;
+    flex-shrink:0;
+  }
+  .next-item p{margin:0;font-size:14.5px;color:#d8d4c8;}
+  .progress-note{
+    margin-top:26px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;
+    color:#9c9788;
+  }
+  footer{
+    padding:26px 0 40px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    letter-spacing:.02em;
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <span>US10Y <span class="down">2.5bp ↓</span></span>
+    <span>KTB 3Y <span class="up">1.1bp ↑</span></span>
+    <span>회사채 AA- 스프레드 <span class="up">+3bp</span></span>
+    <span>USD/KRW 1,342.10</span>
+    <span>CDS KR 5Y 28bp</span>
+    <span>RFQ 대기 3건</span>
+    <span>모닝 브리핑 09:05 발송</span>
+    <span>US10Y <span class="down">2.5bp ↓</span></span>
+    <span>KTB 3Y <span class="up">1.1bp ↑</span></span>
+    <span>회사채 AA- 스프레드 <span class="up">+3bp</span></span>
+    <span>USD/KRW 1,342.10</span>
+    <span>CDS KR 5Y 28bp</span>
+    <span>RFQ 대기 3건</span>
+    <span>모닝 브리핑 09:05 발송</span>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="memo-meta">
+      <span>내부용 · <b>FICC S&amp;T</b></span>
+      <span>주제: AI 에이전트 입문</span>
+      <span>난이도: 첫 사이클</span>
+      <span>도구: Claude</span>
+    </div>
+    <h1 class="title">검색만 해봤어도<br>괜찮다 — <em>내 데스크 업무</em>를<br>대신할 에이전트 만들기</h1>
+    <p class="lede">
+      챗봇에게 질문만 던져봤다면 지금까지는 그걸로 충분했다. 이번엔 다르다.
+      이 랩(Lab)은 FICC 세일즈 데스크의 반복 업무 하나를 골라, Claude로
+      실제로 동작하는 에이전트를 처음부터 끝까지 만들어보는 다섯 단계 실습이다.
+      목업 데이터와 실제 지시문 예시가 그대로 포함되어 있어, 바로 따라 해볼 수 있다.
+    </p>
+    <div class="pull">
+      <span class="tag">시나리오</span>
+      <p>매일 아침 9시, 크레딧 마켓 리서치 3~4건을 훑어 <b>데스크용 3줄 브리핑</b>을 만드는
+      데 20분. 이 랩을 마치면 그 20분을 Claude 에이전트가 초안으로 대신한다 — 검토는 여전히 사람 몫이다.</p>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Why Now</span>
+    <h2 class="h2">패러다임이 바뀌는 걸 눈으로 본 적이 없다면, 지금이 그 한 번이다</h2>
+    <p class="section-lede">
+      챗지피티로 뉴스 요약이나 용어 검색을 해본 경험은 검색창을 하나 더 늘린 것에 가깝다.
+      에이전트는 다르다 — 지시를 받으면 여러 단계를 스스로 수행하고, 초안을 만들고,
+      필요하면 되묻는 '동료'에 가깝다. 이 차이를 데스크 업무 하나로 직접 겪어보는 것이
+      이 랩의 유일한 목표다.
+    </p>
+    <div class="why-grid">
+      <div>
+        <p><b style="color:var(--teal-ink)">검색 vs. 에이전트.</b> 검색은 질문 하나에 답 하나를 받는 것이고,
+        에이전트는 "오늘자 크레딧 리서치를 훑어서 톤과 형식에 맞춰 브리핑 초안을 만들어줘"처럼
+        <em>여러 단계로 이뤄진 작업</em>을 맡기는 것이다. 데스크 업무 대부분은 후자에 가깝다.</p>
+        <p><b style="color:var(--teal-ink)">이 랩에서 안 다루는 것.</b> 최신 논문, 모델 성능 비교, 코딩 이론은
+        다루지 않는다. 대신 "내 옆자리 주니어에게 업무 하나를 인수인계한다"는 감각으로
+        지시서를 쓰고, 결과를 검수하고, 고쳐나가는 루틴에 집중한다.</p>
+      </div>
+      <div class="why-card">
+        <h3>이 랩이 끝나면 남는 것</h3>
+        <ul>
+          <li>업무 하나를 "에이전트에게 맡길 수 있는 형태"로 쪼개는 방법</li>
+          <li>Claude에게 역할·형식·금지사항을 지시하는 감각</li>
+          <li>결과물을 검수하고 프롬프트를 고치는 반복 루틴</li>
+          <li>다른 업무로 확장할 때 무엇부터 볼지에 대한 기준</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Curriculum · 5 Modules</span>
+    <h2 class="h2">학습 여정</h2>
+    <p class="section-lede">순서대로 진행하는 다섯 단계다. 각 단계는 이전 단계의 결과물을 그대로 이어받는다 — 되돌아가지 않아도 되게끔 설계했다.</p>
+
+    <div class="timeline">
+      <div class="mod">
+        <div class="mod__rail"><div class="mod__num">01</div><div class="mod__line"></div></div>
+        <div class="mod__body">
+          <div class="mod__top">
+            <div>
+              <span class="mod__label">관찰</span>
+              <div class="mod__title">데스크 업무 지도 그리기</div>
+            </div>
+            <span class="mod__time mono">약 30분</span>
+          </div>
+          <p class="mod__desc">
+            하루 업무를 시간대별로 적어보고, "반복적이고 형식이 정해져 있으며 시간이 드는" 작업을 골라낸다.
+            에이전트는 판단력보다 반복 작업에서 먼저 힘을 발휘한다.
+          </p>
+          <div class="mod__scenario">
+            <b>FICC 데스크 예시</b>
+            데일리 마켓 컬러 요약 · 고객사별 포지션 노트 정리 · RFQ 응답 초안 작성 ·
+            리서치 클리핑 스크리닝 · 고객 미팅 전 브리핑 노트
+          </div>
+          <div class="mod__deliverable">
+            <input type="checkbox" class="chk" id="d1"><label for="d1">산출물: 업무 후보 3가지를 한 줄씩 적은 목록</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod__rail"><div class="mod__num">02</div><div class="mod__line"></div></div>
+        <div class="mod__body">
+          <div class="mod__top">
+            <div>
+              <span class="mod__label">설계</span>
+              <div class="mod__title">목표·입력·출력 한 장으로 정리하기</div>
+            </div>
+            <span class="mod__time mono">약 40분</span>
+          </div>
+          <p class="mod__desc">
+            고른 업무 하나를 "무엇을 받아서 → 무엇을 내놓는지"로 명확히 쓴다.
+            신입 사원에게 업무를 인계할 때 쓸 법한 지시서라고 생각하면 된다 — 톤, 분량,
+            반드시 지켜야 할 금지사항(예: 확정적인 투자 판단 표현 금지)까지 포함한다.
+            아래 실습 키트의 지시문 예시가 이 단계의 결과물이 어떤 모습인지 보여준다.
+          </p>
+          <div class="mod__scenario">
+            <b>스펙 예시 — 크레딧 브리핑 에이전트</b>
+            입력: 리서치 노트 3~4건(텍스트) · 출력: 불릿 3개, 각 25자 이내, 데스크 톤 ·
+            금지: 매수/매도 단정 표현, 출처 없는 수치 인용
+          </div>
+          <div class="mod__deliverable">
+            <input type="checkbox" class="chk" id="d2"><label for="d2">산출물: 에이전트 스펙 한 장 (목표/입력/출력/금지사항)</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod__rail"><div class="mod__num">03</div><div class="mod__line"></div></div>
+        <div class="mod__body">
+          <div class="mod__top">
+            <div>
+              <span class="mod__label">실습</span>
+              <div class="mod__title">Claude로 첫 에이전트 만들기</div>
+            </div>
+            <span class="mod__time mono">약 50분</span>
+          </div>
+          <p class="mod__desc">
+            02단계 스펙을 그대로 Claude에게 지시문(시스템 프롬프트)으로 옮긴다.
+            아래 <b style="color:var(--teal-ink)">실습 키트</b>의 목업 리서치 노트와 지시문을 그대로 복사해서
+            Claude.ai나 Claude Code에 붙여넣으면 이 단계를 바로 체험할 수 있다.
+          </p>
+          <div class="mod__scenario">
+            <b>반복 루프</b>
+            초안 생성 → 데스크 동료에게 보여줄 수준인지 체크 → 어색한 부분을 지시문에 반영 →
+            같은 입력으로 재생성 → 3회 반복 후 비교
+          </div>
+          <div class="mod__deliverable">
+            <input type="checkbox" class="chk" id="d3"><label for="d3">산출물: 3번 이상 수정을 거친 지시문 + 결과 샘플</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod__rail"><div class="mod__num">04</div><div class="mod__line"></div></div>
+        <div class="mod__body">
+          <div class="mod__top">
+            <div>
+              <span class="mod__label">검증</span>
+              <div class="mod__title">틀렸을 때를 미리 잡아두기</div>
+            </div>
+            <span class="mod__time mono">약 30분</span>
+          </div>
+          <p class="mod__desc">
+            금융 정보는 틀린 요약 한 줄의 대가가 크다. 에이전트 결과물 중
+            "숫자·날짜·고유명사"처럼 반드시 사람이 대조해야 할 항목을 표시하는 습관을 만든다.
+            에이전트는 초안 작성자이지 최종 승인자가 아니다.
+          </p>
+          <div class="mod__scenario">
+            <b>체크 포인트</b>
+            수치·bp·만기일 등 사실 정보는 원문 대조 · 애매한 표현은 사람이 확정 ·
+            출처가 불명확한 문장은 반려 후 재생성
+          </div>
+          <div class="mod__deliverable">
+            <input type="checkbox" class="chk" id="d4"><label for="d4">산출물: "반드시 사람이 확인할 항목" 체크리스트 3개</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod__rail"><div class="mod__num">05</div></div>
+        <div class="mod__body">
+          <div class="mod__top">
+            <div>
+              <span class="mod__label">확장</span>
+              <div class="mod__title">데스크 밖으로 넓히기</div>
+            </div>
+            <span class="mod__time mono">약 20분</span>
+          </div>
+          <p class="mod__desc">
+            완성한 에이전트 하나를 동료 한 명에게 보여주고 피드백을 받는다.
+            그다음 01단계에서 골랐던 나머지 후보 업무 중 하나를 다음 실습 대상으로 정한다 —
+            큰 전환 없이, 작게 계속 넓혀가는 방식이다.
+          </p>
+          <div class="mod__scenario">
+            <b>다음 후보로 자주 이어지는 업무</b>
+            고객 문의 답변 초안 · 상품 설명자료 요약 · 회의록에서 액션아이템 추출 ·
+            주간 리스크 코멘트 정리
+          </div>
+          <div class="mod__deliverable">
+            <input type="checkbox" class="chk" id="d5"><label for="d5">산출물: 다음에 시도할 업무 1개 + 공유할 동료 1명</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="kit">
+  <div class="wrap">
+    <span class="eyebrow">실습 키트 · 전부 가상 데이터</span>
+    <h2 class="h2">지금 바로 해보기 — 목업 데이터로 체험하는 에이전트 구성</h2>
+    <p class="section-lede">
+      아래 리서치 노트와 지시문은 <b style="color:var(--teal-ink)">전부 가상의 발행사·수치</b>로 만든 연습용 자료다.
+      실제 데스크 데이터가 아니므로 그대로 복사해 Claude.ai나 Claude Code에 붙여넣어도 안전하다.
+      02·03단계를 진행할 때 이 키트를 그대로 사용하면 된다.
+    </p>
+
+    <div class="kit-grid">
+      <div class="kit-card">
+        <div class="kit-card__head">
+          <span class="name mono"><b>노트 1</b> · 한빛중공업 회사채 발행</span>
+          <button class="copy-btn" data-copy="note1" type="button">복사</button>
+        </div>
+        <pre id="note1">[리서치 클리핑 · 가상 데이터 · 2025-11-04]
+한빛중공업, AA0등급 3년물 회사채 500억원 발행 예정. 최초 가이던스 국고채+38bp 제시.
+수요예측 결과에 따라 +33~35bp 구간으로 타이트닝 가능성 거론. 최근 조선 업황 개선으로
+동일 섹터 크레딧 스프레드는 완만한 축소 흐름. 발행 주관사는 확정 전 최종 스프레드 미발표.</pre>
+      </div>
+
+      <div class="kit-card">
+        <div class="kit-card__head">
+          <span class="name mono"><b>노트 2</b> · 국고채 3년물 동향</span>
+          <button class="copy-btn" data-copy="note2" type="button">복사</button>
+        </div>
+        <pre id="note2">[리서치 클리핑 · 가상 데이터 · 2025-11-04]
+국고채 3년물 금리 2.98%로 전일 대비 1.1bp 상승 마감. 전일 발표된 소비자물가지수가
+예상치를 소폭 상회하며 단기 구간 중심 약세. 국고채 10년물은 3.42%로 보합.
+다음 주 예정된 금통위 결과에 따라 단기물 변동성 확대 가능성 존재.</pre>
+      </div>
+
+      <div class="kit-card">
+        <div class="kit-card__head">
+          <span class="name mono"><b>노트 3</b> · 우리해운 리파이낸싱</span>
+          <button class="copy-btn" data-copy="note3" type="button">복사</button>
+        </div>
+        <pre id="note3">[리서치 클리핑 · 가상 데이터 · 2025-11-04]
+우리해운 A+등급 5년물 회사채(만기 2025-12) 차환 관련, 주관사 측은 구체적 일정을
+아직 확정하지 않았다고 밝힘. 시장에서는 컨테이너선 운임 하락을 이유로 신용등급
+하향 가능성이 일부 거론되나, 신용평가사 공식 코멘트는 아직 없음.</pre>
+      </div>
+    </div>
+
+    <div class="kit-grid" style="margin-top:28px;">
+      <div class="kit-card">
+        <div class="kit-card__head">
+          <span class="name mono"><b>지시문 예시</b> · 데일리 크레딧 브리핑 에이전트</span>
+          <button class="copy-btn" data-copy="systemprompt" type="button">복사</button>
+        </div>
+        <pre id="systemprompt">당신은 FICC 세일즈 데스크의 주니어 애널리스트입니다.
+아래 리서치 노트 여러 건을 읽고, 세일즈 담당자가 고객에게 오전 브리핑 때
+바로 읽을 수 있는 요약을 작성하세요.
+
+[출력 규칙]
+- 불릿 3개, 각 불릿은 25자 이내의 한국어 문장으로 작성
+- 톤: 간결하고 사실 중심, 데스크에서 실제 쓰는 말투
+- 각 불릿 끝에 근거가 된 노트 제목을 괄호로 표기
+
+[금지사항]
+- "매수/매도/추천" 등 투자 판단으로 해석될 수 있는 표현 사용 금지
+- 원문에 없는 수치를 추정하거나 새로 만들어내지 말 것
+- 확실하지 않거나 미확정인 내용은 반드시 "확인 필요"로 표기
+
+이제부터 리서치 노트 원문이 이어집니다. 위 규칙에 따라 브리핑을 작성하세요.</pre>
+      </div>
+    </div>
+
+    <p class="kit-note">
+      <b style="color:var(--gold)">지시문이 이렇게 구성되는 이유.</b>
+      "요약해줘"라고만 하면 결과의 형식·분량·톤이 매번 달라진다. 위 지시문은
+      역할(누구 입장에서) · 출력 규칙(형식·분량·톤) · 금지사항(하면 안 되는 것)
+      세 덩어리로 나뉘어 있다 — 이 세 가지만 채워도 대부분의 데스크 업무 에이전트는
+      1차 버전이 완성된다.
+    </p>
+
+    <div class="ba-grid">
+      <div class="kit-card">
+        <div class="kit-card__head ba-card__head">
+          <span class="name mono">Before · 원문 노트 3건 (위 키트 그대로)</span>
+        </div>
+        <pre>노트 1: 한빛중공업 AA0 3Y 500억 발행, 가이던스 +38bp...
+노트 2: 국고채 3년 2.98%, 전일比 1.1bp 상승...
+노트 3: 우리해운 A+ 5Y 리파이낸싱 일정 미확정...</pre>
+      </div>
+      <div class="kit-card">
+        <div class="kit-card__head ba-card__head">
+          <span class="name mono">After · 에이전트 출력 예시</span>
+        </div>
+        <pre>- 한빛중공업 AA0 3Y 500억 발행, +33~35bp 타이트닝 가능 (한빛중공업 회사채 발행)
+- 국고채 3년 2.98%, 전일比 1.1bp 상승 (국고채 3년물 동향)
+- 우리해운 A+ 리파이낸싱 일정 미확정, 신용등급 하향설은 확인 필요 (우리해운 리파이낸싱)</pre>
+      </div>
+    </div>
+
+    <ol class="try-steps">
+      <li><b>1.</b> 위 "지시문 예시" 복사 버튼을 눌러 Claude.ai 새 대화창에 붙여넣는다.</li>
+      <li><b>2.</b> 이어서 노트 1~3을 각각 복사해 같은 대화에 붙여넣는다.</li>
+      <li><b>3.</b> 결과를 위 "After" 예시와 비교하고, 마음에 안 드는 부분을 지시문에 한 줄씩 추가해 재생성해본다.</li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Mindset</span>
+    <h2 class="h2">막막함은 정상이다</h2>
+    <p class="section-lede">한 번도 이런 전환기를 겪어본 적 없다면 심리적 저항은 당연하다. 자주 나오는 걱정들에 미리 답해둔다.</p>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="q">코딩을 몰라도 되나?</div>
+        <div class="a">된다. 이 랩에서 다루는 전부는 자연어로 지시문을 쓰고 다듬는 것이다. 프로그래밍 지식은 필요하지 않다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">첫 시도에서 실패하면 어떻게 하나?</div>
+        <div class="a">지시문을 한 번에 완성하는 사람은 없다. 03단계의 반복 루프 자체가 "고쳐가는 과정"을 정상 경로로 설계한 것이다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">회사 데이터를 넣어도 안전한가?</div>
+        <div class="a">이 랩은 사내 데이터 취급 정책을 대체하지 않는다. 실습 키트는 전부 가상 데이터이며, 실제 고객·거래 데이터 사용 전에는 컴플라이언스 확인을 거친다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">한 번에 얼마나 시간을 써야 하나?</div>
+        <div class="a">다섯 단계를 합쳐 하루 반나절 정도다. 하루에 한 단계씩 나눠 진행해도 무방하다 — 매주 30분이면 충분히 이어갈 수 있다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <span class="eyebrow">Next</span>
+    <h2 class="h2">다음 실습 세션 전 준비할 것</h2>
+    <p class="section-lede">위 체크박스로 진행 상황이 이 브라우저에 저장된다. 다음 세션에서는 아래 세 가지만 있으면 된다.</p>
+    <div class="next-list">
+      <div class="next-item"><span class="n mono">01</span><p>01단계에서 고른 업무 후보 3가지 목록</p></div>
+      <div class="next-item"><span class="n mono">02</span><p>실습 키트 대신 붙여넣어볼, 실제 리서치 노트나 뉴스의 익명화된 샘플 1~2건</p></div>
+      <div class="next-item"><span class="n mono">03</span><p>결과물을 함께 봐줄 동료 또는 팀장 1명 — 완성본이 아니라 초안을 보여줄 상대</p></div>
+    </div>
+    <p class="progress-note mono" id="progressNote">진행 0 / 5 단계 완료</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">데스크 에이전트 랩 · FICC S&amp;T 내부 학습용 · 완성된 에이전트가 아니라 다음 시도를 위한 감각을 남기는 것이 목표다.</div>
+</footer>
+
+<script>
+(function(){
+  var boxes = document.querySelectorAll('.mod__deliverable .chk');
+  var note = document.getElementById('progressNote');
+  var KEY = 'desk-agent-lab-progress';
+
+  function safeGet(){
+    try { return JSON.parse(localStorage.getItem(KEY) || '{}'); }
+    catch(e){ return {}; }
+  }
+  function safeSet(v){
+    try { localStorage.setItem(KEY, JSON.stringify(v)); }
+    catch(e){}
+  }
+  function update(){
+    var state = {};
+    var done = 0;
+    boxes.forEach(function(b){
+      state[b.id] = b.checked;
+      if (b.checked) done++;
+      var mod = b.closest('.mod');
+      if (mod) mod.classList.toggle('is-done', b.checked);
+    });
+    safeSet(state);
+    if (note) note.textContent = '진행 ' + done + ' / ' + boxes.length + ' 단계 완료';
+  }
+
+  var saved = safeGet();
+  boxes.forEach(function(b){
+    if (saved[b.id]) b.checked = true;
+  });
+  update();
+
+  boxes.forEach(function(b){ b.addEventListener('change', update); });
+})();
+
+(function(){
+  var buttons = document.querySelectorAll('.copy-btn[data-copy]');
+  buttons.forEach(function(btn){
+    var targetId = btn.getAttribute('data-copy');
+    var target = document.getElementById(targetId);
+    if (!target) return;
+    btn.addEventListener('click', function(){
+      var text = target.textContent;
+      var done = function(){
+        var original = btn.textContent;
+        btn.textContent = '복사됨';
+        setTimeout(function(){ btn.textContent = original; }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function(){
+          fallbackCopy(text, done);
+        });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, done){
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch(e){}
+    document.body.removeChild(ta);
+    done();
+  }
+})();
+</script>
+</body>
+</html>
