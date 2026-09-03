@@ -376,6 +376,7 @@
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:20px;
+    align-items:start;
   }
   @media (max-width:760px){.ba-grid{grid-template-columns:1fr;}}
   .ba-card__head .name{font-size:11.5px;}
@@ -383,6 +384,8 @@
     margin-top:18px;
     display:grid;
     gap:10px;
+    list-style:none;
+    padding-left:0;
   }
   .try-steps li{font-size:14.5px;color:var(--ink-soft);}
 
@@ -482,15 +485,14 @@
     </div>
     <h1 class="title"><em>내 업무</em>를<br>대신할 에이전트 만들기</h1>
     <p class="lede">
-      FICC 세일즈 데스크에서 반복되는 업무 하나를 골라, Claude로 실제 동작하는 에이전트를
-      처음부터 끝까지 만들어보는 다섯 단계 학습문서다. 가상 데이터와 지시문 예시가 그대로
-      들어 있어 바로 따라 해볼 수 있다.
+      업무 중 반복되는 일 하나를 골라, Claude로 실제 동작하는 에이전트를 처음부터 끝까지
+      만들어보는 다섯 단계 방법론이다. 특정 업무 하나에 묶이지 않도록 방법 자체에 집중해서
+      썼고, 맨 아래에는 참고할 수 있는 예시 하나를 가상 데이터와 함께 붙여뒀다.
     </p>
     <div class="pull">
-      <span class="tag">시나리오</span>
-      <p>매일 아침 9시, 크레딧 마켓 리서치 3~4건을 훑어 3줄 브리핑을 만드는
-      데 20분. 이 학습문서를 마치면 그 20분을 Claude 에이전트가 초안으로 대신한다. 최종
-      검토는 여전히 사람의 몫이다.</p>
+      <span class="tag">예시</span>
+      <p>매일 아침 반복되는 시장 동향 요약, 고객 문의 답변 초안, 회의록에서 할 일 뽑아내기처럼
+      형식이 어느 정도 정해져 있고 반복되는 일이라면 무엇이든 이 방법론을 적용할 수 있다.</p>
     </div>
   </div>
 </header>
@@ -537,9 +539,9 @@
 
 <section>
   <div class="wrap">
-    <span class="eyebrow">학습 순서 · 5단계</span>
-    <h2 class="h2">학습 여정</h2>
-    <p class="section-lede">순서대로 진행하는 다섯 단계다. 각 단계는 이전 단계의 결과물을 그대로 이어받는다. 앞 단계로 되돌아가지 않아도 되게 설계했다.</p>
+    <span class="eyebrow">방법론 · 5단계</span>
+    <h2 class="h2">에이전트를 적용하는 5단계</h2>
+    <p class="section-lede">어떤 업무에나 적용할 수 있는 순서다. 각 단계는 이전 단계의 결과물을 그대로 이어받는다. 앞 단계로 되돌아가지 않아도 되게 설계했다.</p>
 
     <div class="timeline">
       <div class="mod">
@@ -580,13 +582,12 @@
           <p class="mod__desc">
             고른 업무 하나를 "무엇을 받아서 → 무엇을 내놓는지"로 명확히 쓴다.
             신입 사원에게 업무를 인계할 때 쓸 법한 지시서라고 생각하면 된다. 톤, 분량,
-            반드시 지켜야 할 금지사항(예: 확정적인 투자 판단 표현 금지)까지 포함한다.
-            아래 실습 자료의 지시문 예시가 이 단계의 결과물이 어떤 모습인지 보여준다.
+            반드시 지켜야 할 금지사항까지 포함한다. 맨 아래 "예시로 살펴보기"에 완성된
+            지시서 한 장이 실려 있다.
           </p>
           <div class="mod__scenario">
-            <b>지시서 예시 · 크레딧 브리핑 에이전트</b>
-            입력: 리서치 노트 3~4건(텍스트) · 출력: 불릿 3개, 각 25자 이내, 실무 톤 ·
-            금지: 매수/매도 단정 표현, 출처 없는 수치 인용
+            <b>지시서의 기본 틀</b>
+            입력: 무엇을 줄 것인가 · 출력: 형식·분량·톤 · 금지: 하면 안 되는 표현
           </div>
           <div class="mod__scenario concept">
             <b>핵심 개념 · 스킬(Skill)</b>
@@ -612,11 +613,12 @@
             <span class="mod__time mono">약 50분</span>
           </div>
           <p class="mod__desc">
-            채팅창에 다 붙여넣고 답 하나를 받는 건 챗봇 사용법과 다르지 않다. 이번엔 폴더 하나를
-            만들고, 아래 <b style="color:var(--teal-ink)">실습 자료</b>의 가상 노트 3개를 각각 파일로 저장한다.
-            그 폴더에서 Claude Code를 실행하고 "이 폴더의 노트를 읽고 02단계 지시서 규칙에 따라
-            briefing.md로 요약해줘"라고 요청한다. Claude Code가 파일 목록을 스스로 확인하고,
-            노트를 하나씩 읽고, briefing.md를 새로 쓰는 순서로 진행되는 걸 그대로 지켜본다.
+            채팅창에 다 붙여넣고 답 하나를 받는 건 챗봇 사용법과 다르지 않다. 이번엔 업무에 필요한
+            자료를 폴더 하나에 파일로 모아두고, 그 폴더에서 Claude Code를 실행해 02단계 지시서를
+            전달한 뒤 "이 폴더의 자료를 읽고 결과를 파일로 정리해줘"라고 요청한다. Claude Code가
+            파일 목록을 스스로 확인하고, 자료를 하나씩 읽고, 결과 파일을 새로 쓰는 순서로 진행되는
+            걸 그대로 지켜본다. 바로 해볼 자료가 없다면 맨 아래 "예시로 살펴보기"의 가상 자료를
+            써도 된다.
           </p>
           <div class="mod__scenario concept">
             <b>핵심 개념 · 하니스(Harness)</b>
@@ -628,11 +630,11 @@
           </div>
           <div class="mod__scenario">
             <b>고쳐가는 과정</b>
-            초안(briefing.md) 생성 → 동료에게 보여줄 수준인지 확인 → 어색한 부분을 지시서에 반영 →
-            같은 노트로 다시 요청 → 결과 비교
+            초안 생성 → 동료에게 보여줄 수준인지 확인 → 어색한 부분을 지시서에 반영 →
+            같은 자료로 다시 요청 → 결과 비교
           </div>
           <div class="mod__deliverable">
-            <input type="checkbox" class="chk" id="d3"><label for="d3">산출물: 3번 이상 수정을 거친 지시서 + briefing.md 결과</label>
+            <input type="checkbox" class="chk" id="d3"><label for="d3">산출물: 3번 이상 수정을 거친 지시서 + 실행 결과 파일</label>
           </div>
         </div>
       </div>
@@ -648,7 +650,7 @@
             <span class="mod__time mono">약 30분</span>
           </div>
           <p class="mod__desc">
-            AI는 만능이 아니다. 금융 정보는 틀린 요약 한 줄의 대가가 크다. 에이전트 결과물 중
+            AI는 만능이 아니다. 업무에 따라 틀린 정보 한 줄의 대가가 클 수 있다. 에이전트 결과물 중
             "숫자·날짜·고유명사"처럼 반드시 사람이 대조해야 할 항목을 표시하는 습관을 만든다.
             에이전트는 초안 작성자이지 최종 승인자가 아니다.
           </p>
@@ -659,15 +661,15 @@
             일: 브리핑 초안, 문의 답변 초안. 이 학습문서가 다루는 대부분의 사례가 여기 속한다
           </div>
           <div class="mod__scenario">
-            <b>확인 사항</b>
-            수치·bp·만기일 등 사실 정보는 원문 대조 · 애매한 표현은 사람이 확정 ·
+            <b>확인 사항의 기본 틀</b>
+            수치·날짜·고유명사 등 사실 정보는 원문 대조 · 애매한 표현은 사람이 확정 ·
             출처가 불명확한 문장은 반려 후 재생성
           </div>
           <div class="mod__scenario concept">
             <b>한 단계 더 · 스스로 비교시키기</b>
-            결과물을 실습 자료의 "After" 예시 같은 참고 답안과 비교해달라고 Claude에게 요청하고,
-            어디가 왜 다른지 설명하게 한 뒤 다시 써보라고 시킨다. 사람의 검토를 대신하진 않지만
-            초안의 완성도를 한 번 더 끌어올릴 수 있다.
+            결과물을 참고할 만한 정답 예시나 사람이 잘 써둔 이전 사례와 비교해달라고 Claude에게
+            요청하고, 어디가 왜 다른지 설명하게 한 뒤 다시 써보라고 시킨다. 사람의 검토를 대신하진
+            않지만 초안의 완성도를 한 번 더 끌어올릴 수 있다.
           </div>
           <div class="mod__deliverable">
             <input type="checkbox" class="chk" id="d4"><label for="d4">산출물: "반드시 사람이 확인할 항목" 체크리스트 3개</label>
@@ -681,7 +683,7 @@
           <div class="mod__top">
             <div>
               <span class="mod__label">확장</span>
-              <div class="mod__title">데스크 밖으로 넓히기</div>
+              <div class="mod__title">다른 업무로 넓히기</div>
             </div>
             <span class="mod__time mono">약 20분</span>
           </div>
@@ -704,14 +706,55 @@
   </div>
 </section>
 
-<section id="kit">
+<section>
   <div class="wrap">
-    <span class="eyebrow">실습 자료 · 전부 가상 데이터</span>
-    <h2 class="h2">지금 바로 해보기</h2>
+    <span class="eyebrow">자주 묻는 질문</span>
+    <h2 class="h2">자주 나오는 질문</h2>
+    <p class="section-lede">미리 답해둔다.</p>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="q">코딩을 몰라도 되나?</div>
+        <div class="a">된다. 이 학습문서에서 다루는 전부는 자연어로 지시문을 쓰고 다듬는 것이다. 프로그래밍 지식은 필요하지 않다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">첫 시도에서 실패하면 어떻게 하나?</div>
+        <div class="a">지시문을 한 번에 완성하는 사람은 없다. 03단계는 원래 여러 번 고치면서 완성해가도록 만든 과정이다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">회사 데이터를 넣어도 안전한가?</div>
+        <div class="a">이 학습문서는 사내 데이터 취급 정책을 대체하지 않는다. "예시로 살펴보기"의 자료는 전부 가상 데이터이며, 실제 고객·거래 데이터 사용 전에는 컴플라이언스 확인을 거친다.</div>
+      </div>
+      <div class="faq-item">
+        <div class="q">한 번에 얼마나 시간을 써야 하나?</div>
+        <div class="a">다섯 단계를 합쳐 하루 반나절 정도다. 하루에 한 단계씩 나눠 진행해도 무방하다. 매주 30분씩만 투자해도 충분히 이어갈 수 있다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <span class="eyebrow">다음 단계</span>
+    <h2 class="h2">다음 실습 전 준비할 것</h2>
+    <p class="section-lede">위 체크박스로 진행 상황이 이 브라우저에 저장된다. 다음번에는 아래 세 가지만 있으면 된다.</p>
+    <div class="next-list">
+      <div class="next-item"><span class="n mono">01</span><p>01단계에서 고른 업무 후보 3가지 목록</p></div>
+      <div class="next-item"><span class="n mono">02</span><p>"예시로 살펴보기"의 가상 자료 대신 붙여넣어볼, 실제 업무 자료의 익명화된 샘플 1~2건</p></div>
+      <div class="next-item"><span class="n mono">03</span><p>결과물을 함께 봐줄 동료 또는 팀장 1명. 완성본이 아니라 초안을 보여줄 상대면 충분하다</p></div>
+    </div>
+    <p class="progress-note mono" id="progressNote">진행 0 / 5 단계 완료</p>
+  </div>
+</section>
+
+<section id="example">
+  <div class="wrap">
+    <span class="eyebrow">예시 · 전부 가상 데이터</span>
+    <h2 class="h2">예시로 살펴보기</h2>
     <p class="section-lede">
-      아래 리서치 노트와 지시문은 <b style="color:var(--teal-ink)">전부 가상의 발행사·수치</b>로 만든 연습용 자료다.
-      실제 업무 데이터가 아니므로 그대로 복사해 파일로 저장하거나 Claude Code에 붙여넣어도 안전하다.
-      02·03단계를 진행할 때 이 자료를 그대로 사용하면 된다.
+      위 5단계를 실제로 어떻게 적용하는지 궁금할 때 참고할 사례다. FICC 세일즈 데스크의 데일리
+      크레딧 브리핑은 그중 하나를 예로 든 것일 뿐, <b style="color:var(--teal-ink)">같은 방법을 어떤
+      업무에도 그대로 적용할 수 있다</b>. 아래 리서치 노트와 지시문은 전부 가상의 발행사·수치로
+      만든 연습용 자료이니 그대로 복사해 파일로 저장하거나 Claude Code에 붙여넣어도 안전하다.
     </p>
 
     <div class="kit-grid">
@@ -806,46 +849,6 @@
       <li><b>3.</b> Claude Code가 파일 목록을 확인하고 노트를 하나씩 읽은 뒤 briefing.md를 새로 쓰는 과정을 지켜본다.</li>
       <li><b>4.</b> 결과를 위 "After" 예시와 비교하고, 마음에 안 드는 부분을 지시문에 한 줄씩 추가해 다시 요청해본다.</li>
     </ol>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <span class="eyebrow">자주 묻는 질문</span>
-    <h2 class="h2">자주 나오는 질문</h2>
-    <p class="section-lede">미리 답해둔다.</p>
-    <div class="faq-grid">
-      <div class="faq-item">
-        <div class="q">코딩을 몰라도 되나?</div>
-        <div class="a">된다. 이 학습문서에서 다루는 전부는 자연어로 지시문을 쓰고 다듬는 것이다. 프로그래밍 지식은 필요하지 않다.</div>
-      </div>
-      <div class="faq-item">
-        <div class="q">첫 시도에서 실패하면 어떻게 하나?</div>
-        <div class="a">지시문을 한 번에 완성하는 사람은 없다. 03단계는 원래 여러 번 고치면서 완성해가도록 만든 과정이다.</div>
-      </div>
-      <div class="faq-item">
-        <div class="q">회사 데이터를 넣어도 안전한가?</div>
-        <div class="a">이 학습문서는 사내 데이터 취급 정책을 대체하지 않는다. 실습 자료는 전부 가상 데이터이며, 실제 고객·거래 데이터 사용 전에는 컴플라이언스 확인을 거친다.</div>
-      </div>
-      <div class="faq-item">
-        <div class="q">한 번에 얼마나 시간을 써야 하나?</div>
-        <div class="a">다섯 단계를 합쳐 하루 반나절 정도다. 하루에 한 단계씩 나눠 진행해도 무방하다. 매주 30분씩만 투자해도 충분히 이어갈 수 있다.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="closing">
-  <div class="wrap">
-    <span class="eyebrow">다음 단계</span>
-    <h2 class="h2">다음 실습 전 준비할 것</h2>
-    <p class="section-lede">위 체크박스로 진행 상황이 이 브라우저에 저장된다. 다음번에는 아래 세 가지만 있으면 된다.</p>
-    <div class="next-list">
-      <div class="next-item"><span class="n mono">01</span><p>01단계에서 고른 업무 후보 3가지 목록</p></div>
-      <div class="next-item"><span class="n mono">02</span><p>실습 자료 대신 붙여넣어볼, 실제 리서치 노트나 뉴스의 익명화된 샘플 1~2건</p></div>
-      <div class="next-item"><span class="n mono">03</span><p>결과물을 함께 봐줄 동료 또는 팀장 1명. 완성본이 아니라 초안을 보여줄 상대면 충분하다</p></div>
-    </div>
-    <p class="progress-note mono" id="progressNote">진행 0 / 5 단계 완료</p>
   </div>
 </section>
 
