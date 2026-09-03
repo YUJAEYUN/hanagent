@@ -76,36 +76,6 @@
   a{color:var(--teal-ink);}
   .wrap{max-width:1040px;margin:0 auto;padding:0 28px;}
 
-  /* ---------- ticker ---------- */
-  .ticker{
-    background:var(--ink);
-    color:var(--paper);
-    overflow:hidden;
-    white-space:nowrap;
-    border-bottom:1px solid var(--line-strong);
-  }
-  .ticker__track{
-    display:inline-flex;
-    gap:40px;
-    padding:9px 0;
-    animation:scroll 34s linear infinite;
-  }
-  .ticker span{
-    font-family:"IBM Plex Mono",monospace;
-    font-size:12.5px;
-    letter-spacing:.02em;
-    opacity:.88;
-  }
-  .ticker .up{color:#7fd9c4;}
-  .ticker .down{color:#f0a48c;}
-  @keyframes scroll{
-    from{transform:translateX(0);}
-    to{transform:translateX(-50%);}
-  }
-  @media (prefers-reduced-motion: reduce){
-    .ticker__track{animation:none;}
-  }
-
   /* ---------- hero ---------- */
   header.hero{
     padding:64px 0 52px;
@@ -431,25 +401,6 @@
 </head>
 <body>
 
-<div class="ticker" aria-hidden="true">
-  <div class="ticker__track">
-    <span>US10Y <span class="down">2.5bp ↓</span></span>
-    <span>KTB 3Y <span class="up">1.1bp ↑</span></span>
-    <span>회사채 AA- 스프레드 <span class="up">+3bp</span></span>
-    <span>USD/KRW 1,342.10</span>
-    <span>CDS KR 5Y 28bp</span>
-    <span>RFQ 대기 3건</span>
-    <span>모닝 브리핑 09:05 발송</span>
-    <span>US10Y <span class="down">2.5bp ↓</span></span>
-    <span>KTB 3Y <span class="up">1.1bp ↑</span></span>
-    <span>회사채 AA- 스프레드 <span class="up">+3bp</span></span>
-    <span>USD/KRW 1,342.10</span>
-    <span>CDS KR 5Y 28bp</span>
-    <span>RFQ 대기 3건</span>
-    <span>모닝 브리핑 09:05 발송</span>
-  </div>
-</div>
-
 <header class="hero">
   <div class="wrap">
     <div class="memo-meta">
@@ -477,8 +428,8 @@
     <span class="eyebrow">왜 지금</span>
     <h2 class="h2">지금 에이전트를 배워야 하는 이유</h2>
     <p class="section-lede">
-      챗지피티를 활용해 검색이나 글 요약을 해본 경험으로는, 에이전트를 잘 활용하고 있는 건지
-      감이 잘 오지 않을 것이다. 최근 LLM 모델의 추론 능력이 올라가고, 파일을 읽고 쓰거나
+      챗지피티로 검색이나 글 요약을 해본 경험으로는, 에이전트를 잘 쓰고 있는 건지 감이 잘
+      오지 않을 것이다. 최근 LLM 모델의 추론 능력이 올라가고, 파일을 읽고 쓰거나
       명령을 실행하는 도구를 LLM 모델에 연결하고 지켜야 할 규칙까지 정해주는 harness까지
       자리잡으면서, 에이전트가 실제 업무에 쓸 만한 수준이 됐다. 지금 배워두면 다른 업무로도
       넓혀갈 수 있다. 업무 하나를 골라 직접 겪어보는 것이 이 학습문서의 목표다.
@@ -488,8 +439,8 @@
       같은 대화형 AI라는 점은 같다. 다만 LLM 모델 혼자서는 파일을 읽고 쓰거나 명령을 실행할
       수 없고, 지켜야 할 규칙도 스스로 정하지 않는다. 이런 도구를 모델에 연결하고 지켜야 할
       규칙까지 정해서 실무에 쓸 만하게 만들어주는 프로그램이 따로 필요하다. 이걸 harness라고
-      부르고, Claude Code와 Claude Cowork가 Anthropic이 만든 harness다. OpenAI에도 Codex 같은
-      비슷한 harness가 있어서, harness 자체는 Claude만의 특징이 아니다. 코드 품질을 겨루는
+      부르고, Claude Code와 Claude Cowork가 Anthropic이 만든 것이다. OpenAI에도 Codex 같은
+      비슷한 도구가 있어서, Claude만의 특징은 아니다. 코드 품질을 겨루는
       벤치마크에서는 Claude Code가 앞서는 경우가 많지만, OpenAI가
       Codex 가격을 큰 폭으로 낮추면서 지금은 둘 다 경쟁력 있는 선택지가 됐다. 이 학습문서가
       Claude를 기준으로 쓴 건 지금 이 교육에서 쓰는 도구가 Claude이기 때문이다.
@@ -697,11 +648,11 @@
     <div class="faq-grid">
       <div class="faq-item">
         <div class="q">코딩을 몰라도 되나?</div>
-        <div class="a">된다. 이 학습문서에서 다루는 전부는 자연어로 지시문을 쓰고 다듬는 것이다. 프로그래밍 지식은 필요하지 않다.</div>
+        <div class="a">된다. 이 학습문서에서 다루는 전부는 자연어로 지시서를 쓰고 다듬는 것이다. 프로그래밍 지식은 필요하지 않다.</div>
       </div>
       <div class="faq-item">
         <div class="q">첫 시도에서 실패하면 어떻게 하나?</div>
-        <div class="a">지시문을 한 번에 완성하는 사람은 없다. 03단계는 원래 여러 번 고치면서 완성해가도록 만든 과정이다.</div>
+        <div class="a">지시서를 한 번에 완성하는 사람은 없다. 03단계는 원래 여러 번 고치면서 완성해가도록 만든 과정이다.</div>
       </div>
       <div class="faq-item">
         <div class="q">회사 데이터를 넣어도 안전한가?</div>
@@ -781,7 +732,7 @@
     <div class="kit-grid" style="margin-top:28px;">
       <div class="kit-card">
         <div class="kit-card__head">
-          <span class="name mono"><b>지시문 예시</b> · 여행 일정표 에이전트</span>
+          <span class="name mono"><b>지시서 예시</b> · 여행 일정표 에이전트</span>
           <button class="copy-btn" data-copy="systemprompt" type="button">복사</button>
         </div>
         <pre id="systemprompt">당신은 여행 일정을 정리해주는 개인 비서입니다.
@@ -801,8 +752,8 @@
     </div>
 
     <p class="kit-note">
-      <b style="color:var(--gold)">지시문이 이렇게 구성되는 이유.</b>
-      "정리해줘"라고만 하면 결과의 형식·분량·기준이 매번 달라진다. 위 지시문은
+      <b style="color:var(--gold)">지시서가 이렇게 구성되는 이유.</b>
+      "정리해줘"라고만 하면 결과의 형식·분량·기준이 매번 달라진다. 위 지시서는
       역할(누구 입장에서) · 출력 규칙(형식·분량·기준) · 금지사항(하면 안 되는 것),
       이렇게 세 덩어리로 나뉘어 있다. 이 세 가지만 채워도 초안 수준은 대부분 나온다.
     </p>
@@ -830,9 +781,9 @@
 
     <ol class="try-steps">
       <li><b>1.</b> 폴더 하나를 만들고, 노트 1~3을 복사해 각각 텍스트 파일로 저장한다.</li>
-      <li><b>2.</b> 같은 폴더에서 Claude Code를 실행하고, 위 "지시문 예시"를 붙여넣으며 "이 폴더의 예약 확인 메일과 메모를 읽고 규칙에 따라 itinerary.md로 정리해줘"라고 요청한다.</li>
+      <li><b>2.</b> 같은 폴더에서 Claude Code를 실행하고, 위 "지시서 예시"를 붙여넣으며 "이 폴더의 예약 확인 메일과 메모를 읽고 규칙에 따라 itinerary.md로 정리해줘"라고 요청한다.</li>
       <li><b>3.</b> Claude Code가 파일 목록을 확인하고 노트를 하나씩 읽은 뒤 itinerary.md를 새로 쓰는 과정을 지켜본다.</li>
-      <li><b>4.</b> 결과를 위 "After" 예시와 비교하고, 마음에 안 드는 부분을 지시문에 한 줄씩 추가해 다시 요청해본다.</li>
+      <li><b>4.</b> 결과를 위 "After" 예시와 비교하고, 마음에 안 드는 부분을 지시서에 한 줄씩 추가해 다시 요청해본다.</li>
     </ol>
   </div>
 </section>
