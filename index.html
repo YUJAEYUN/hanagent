@@ -23,6 +23,12 @@
     --code-bg:#101826;
     --code-ink:#dfe6e4;
     --code-line:rgba(223,230,228,0.14);
+    --closing-bg:#131b2e;
+    --closing-ink:#edefee;
+    --closing-ink-soft:#b9b4a6;
+    --closing-gold:#d6a45c;
+    --closing-line:rgba(237,233,222,0.14);
+    --closing-muted:#9c9788;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -254,6 +260,7 @@
     transform:rotate(45deg) translate(-1px,-1px);
   }
   .mod__deliverable label{cursor:pointer;}
+  .mod__check{margin-top:6px;padding-left:26px;font-size:12.5px;color:var(--ink-soft);opacity:.85;}
 
   /* ---------- practice toggle ---------- */
   .practice{
@@ -386,13 +393,15 @@
   @media (max-width:760px){.faq-grid{grid-template-columns:1fr;}}
 
   /* ---------- closing ---------- */
+  /* closing은 라이트·다크 테마와 무관하게 항상 어두운 박스로 고정한다.
+     --ink/--paper/--gold는 테마에 따라 밝기가 뒤집히므로 여기서는 쓰지 않는다. */
   .closing{
-    background:var(--ink);
-    color:var(--paper);
+    background:var(--closing-bg);
+    color:var(--closing-ink);
   }
-  .closing .eyebrow{color:var(--gold);}
-  .closing h2.h2{color:var(--paper);}
-  .closing .section-lede{color:var(--ink-soft);}
+  .closing .eyebrow{color:var(--closing-gold);}
+  .closing h2.h2{color:var(--closing-ink);}
+  .closing .section-lede{color:var(--closing-ink-soft);}
   .next-list{
     margin-top:28px;
     display:grid;
@@ -403,20 +412,20 @@
     gap:14px;
     align-items:baseline;
     padding:14px 0;
-    border-bottom:1px solid rgba(237,233,222,0.14);
+    border-bottom:1px solid var(--closing-line);
   }
   .next-item .n{
     font-family:"IBM Plex Mono",monospace;
-    color:var(--gold);
+    color:var(--closing-gold);
     font-size:13px;
     flex-shrink:0;
   }
-  .next-item p{margin:0;font-size:14.5px;color:#d8d4c8;}
+  .next-item p{margin:0;font-size:14.5px;color:var(--closing-ink-soft);}
   .progress-note{
     margin-top:26px;
     font-family:"IBM Plex Mono",monospace;
     font-size:12px;
-    color:#9c9788;
+    color:var(--closing-muted);
   }
   footer{
     padding:26px 0 40px;
@@ -462,7 +471,7 @@
       자리잡으면서, 에이전트가 실제 업무에 쓸 만한 수준이 됐다. 필자는 부서 업무 자동화와
       DART 스크리닝 로직 점검부터 웹툰·영상 콘텐츠 제작, 개인 기록을 정리해주는 세컨드
       브레인까지 여러 분야에 이 방법을 적용해왔다. 지금 이 글을 다듬는 데도 에이전트를 쓴다.
-      CLAUDE.md에 넣어둔 말투 교정 스킬 두 개가 문장을 고쳐준다. 그만큼 접목할 수 있는
+      CLAUDE.md에 정리해둔 말투 체크리스트로 문장을 점검한다. 그만큼 접목할 수 있는
       분야는 넓다. 업무 하나를 골라 직접 겪어보는 것이 이 학습문서의 목표다.
     </p>
     <p class="kit-note">
@@ -554,6 +563,7 @@
           <div class="mod__deliverable">
             <input type="checkbox" class="chk" id="d1"><label for="d1">산출물: 업무 후보 3가지를 한 줄씩 적은 목록</label>
           </div>
+          <p class="mod__check">완료 기준: 후보마다 반복 주기, 입력, 출력, 판단이 필요한 지점을 설명할 수 있다.</p>
         </div>
       </div>
 
@@ -611,6 +621,7 @@
           <div class="mod__deliverable">
             <input type="checkbox" class="chk" id="d2"><label for="d2">산출물: 에이전트 지시서 한 장 (목표/입력/출력/금지사항)</label>
           </div>
+          <p class="mod__check">완료 기준: 처음 보는 동료가 추가 질문 없이 그대로 실행할 수 있다.</p>
         </div>
       </div>
 
@@ -628,6 +639,12 @@
             쓴 것과 다르지 않다. 이번엔 업무에 필요한 자료를 폴더 하나에 파일로 모아두고, 그
             폴더에서 Claude Code를 실행해 지시서를 전달한 뒤 "이 폴더의 자료를 읽고 결과를
             파일로 정리해줘"라고 요청한다.
+          </p>
+          <p class="mod__desc">
+            처음에는 실제 업무 폴더가 아니라 자료를 복사해둔 별도 폴더에서 시작한다. Claude
+            Code가 파일을 잘못 고치거나 지워도 원본은 그대로 남고, 결과가 마음에 들면 그때
+            실제 폴더로 옮기면 된다. 삭제나 외부 전송처럼 되돌리기 어려운 동작은 실행 전에
+            사람이 한 번 더 확인하는 습관을 들인다.
           </p>
           <p class="mod__desc">
             Claude 자체는 글을 읽고 쓰는 LLM 모델일 뿐이라, 파일을 읽고 쓰거나 명령을 실행하려면
@@ -702,6 +719,12 @@
 - 4/8(수) 13:20 파리 출발(경유: 프랑크푸르트) → 4/9(목) 08:55 인천 도착 (항공권 예약 확인)</pre>
                 </div>
               </div>
+              <p class="kit-note">
+                <b style="color:var(--gold)">이 예시도 완벽하지 않다.</b> 지시서는 날짜별로
+                나눠 시간 순서대로 정리하라고 했지만, 위 출력은 4/3~4/6 일정을 하나로 묶었다.
+                이렇게 지시서와 결과가 어긋나는 지점을 찾아 규칙을 더 명확하게 고쳐보는 것도
+                04단계에서 할 일이다.
+              </p>
 
               <ol class="try-steps">
                 <li><b>1.</b> 폴더 하나를 만들고, 노트 1~3을 복사해 각각 텍스트 파일로 저장한다.</li>
@@ -712,8 +735,9 @@
             </div>
           </details>
           <div class="mod__deliverable">
-            <input type="checkbox" class="chk" id="d3"><label for="d3">산출물: 3번 이상 수정을 거친 지시서 + 실행 결과 파일</label>
+            <input type="checkbox" class="chk" id="d3"><label for="d3">산출물: 문제를 찾아 지시서에 반영하고 다시 실행한 기록 2회 이상 + 최종 결과 파일</label>
           </div>
+          <p class="mod__check">완료 기준: Claude Code가 실제 파일을 읽고 별도 결과 파일을 새로 썼다.</p>
         </div>
       </div>
 
@@ -738,14 +762,21 @@
             애매한 표현은 사람이 확정하고, 출처가 불명확한 문장은 반려한 뒤 다시 쓰게 한다.
           </p>
           <p class="mod__desc">
+            정확성만 보면 놓치는 게 있다. 지시서에 넣은 항목이 결과에 빠짐없이 들어갔는지,
+            원문에 없는 내용을 새로 지어내지 않았는지, 정해둔 파일명과 형식을 지켰는지도 함께
+            본다. 정확성·완전성·근거성·형식, 이 네 가지를 확인하는 습관을 들이면 업무가
+            바뀌어도 검증 기준은 그대로 가져갈 수 있다.
+          </p>
+          <p class="mod__desc">
             한 단계 더 나아가고 싶다면, 결과물을 참고할 만한 정답 예시나 사람이 잘 써둔 이전
             사례와 비교해달라고 Claude에게 요청하고 어디가 왜 다른지 설명하게 한 뒤 다시 써보라고
             시킬 수도 있다. 사람의 검토를 대신하진 않지만 초안의 완성도를 한 번 더 끌어올릴 수
             있다. 에이전트는 어디까지나 초안 작성자이지 최종 승인자가 아니다.
           </p>
           <div class="mod__deliverable">
-            <input type="checkbox" class="chk" id="d4"><label for="d4">산출물: "반드시 사람이 확인할 항목" 체크리스트 3개</label>
+            <input type="checkbox" class="chk" id="d4"><label for="d4">산출물: 정확성·완전성·근거성·형식을 기준으로 확인한 체크리스트</label>
           </div>
+          <p class="mod__check">완료 기준: 표시한 항목을 전부 원문과 대조했고, 애매한 표현은 사람이 확정했다.</p>
         </div>
       </div>
 
@@ -782,6 +813,7 @@
           <div class="mod__deliverable">
             <input type="checkbox" class="chk" id="d5"><label for="d5">산출물: 다음에 시도할 업무 1개 + 공유할 동료 1명</label>
           </div>
+          <p class="mod__check">완료 기준: 다음에 시도할 업무와 공유할 동료를 정했다.</p>
         </div>
       </div>
     </div>
