@@ -23,12 +23,6 @@
     --code-bg:#101826;
     --code-ink:#dfe6e4;
     --code-line:rgba(223,230,228,0.14);
-    --closing-bg:#131b2e;
-    --closing-ink:#edefee;
-    --closing-ink-soft:#b9b4a6;
-    --closing-gold:#d6a45c;
-    --closing-line:rgba(237,233,222,0.14);
-    --closing-muted:#9c9788;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -392,41 +386,6 @@
   .faq-item .a{font-size:14px;color:var(--ink-soft);}
   @media (max-width:760px){.faq-grid{grid-template-columns:1fr;}}
 
-  /* ---------- closing ---------- */
-  /* closing은 라이트·다크 테마와 무관하게 항상 어두운 박스로 고정한다.
-     --ink/--paper/--gold는 테마에 따라 밝기가 뒤집히므로 여기서는 쓰지 않는다. */
-  .closing{
-    background:var(--closing-bg);
-    color:var(--closing-ink);
-  }
-  .closing .eyebrow{color:var(--closing-gold);}
-  .closing h2.h2{color:var(--closing-ink);}
-  .closing .section-lede{color:var(--closing-ink-soft);}
-  .next-list{
-    margin-top:28px;
-    display:grid;
-    gap:12px;
-  }
-  .next-item{
-    display:flex;
-    gap:14px;
-    align-items:baseline;
-    padding:14px 0;
-    border-bottom:1px solid var(--closing-line);
-  }
-  .next-item .n{
-    font-family:"IBM Plex Mono",monospace;
-    color:var(--closing-gold);
-    font-size:13px;
-    flex-shrink:0;
-  }
-  .next-item p{margin:0;font-size:14.5px;color:var(--closing-ink-soft);}
-  .progress-note{
-    margin-top:26px;
-    font-family:"IBM Plex Mono",monospace;
-    font-size:12px;
-    color:var(--closing-muted);
-  }
   footer{
     padding:26px 0 40px;
     font-family:"IBM Plex Mono",monospace;
@@ -540,7 +499,7 @@
           <div class="mod__top">
             <div>
               <span class="mod__label">관찰</span>
-              <div class="mod__title">업무 지도 그리기</div>
+              <div class="mod__title">맡길 업무 찾기</div>
             </div>
           </div>
           <p class="mod__desc">
@@ -846,7 +805,6 @@
   <div class="wrap">
     <span class="eyebrow">자주 묻는 질문</span>
     <h2 class="h2">자주 나오는 질문</h2>
-    <p class="section-lede">미리 답해둔다.</p>
     <div class="faq-grid">
       <div class="faq-item">
         <div class="q">코딩을 몰라도 되나?</div>
@@ -868,19 +826,6 @@
   </div>
 </section>
 
-<section class="closing">
-  <div class="wrap">
-    <span class="eyebrow">다음 단계</span>
-    <h2 class="h2">다음 실습 전 준비할 것</h2>
-    <p class="section-lede">위 체크박스로 진행 상황이 이 브라우저에 저장된다. 다음번에는 아래 세 가지만 있으면 된다.</p>
-    <div class="next-list">
-      <div class="next-item"><span class="n mono">01</span><p>01단계에서 고른 업무 후보 3가지 목록</p></div>
-      <div class="next-item"><span class="n mono">02</span><p>03단계 토글의 가상 자료 대신 붙여넣어볼, 실제 업무 자료의 익명화된 샘플 1~2건</p></div>
-      <div class="next-item"><span class="n mono">03</span><p>결과물을 함께 봐줄 동료 또는 팀장 1명. 완성본이 아니라 초안을 보여줄 상대면 충분하다</p></div>
-    </div>
-    <p class="progress-note mono" id="progressNote">진행 0 / 5 단계 완료</p>
-  </div>
-</section>
 
 <footer>
   <div class="wrap">에이전트 학습문서 · FICC S&amp;T 내부 학습용 · 완성된 에이전트가 아니라 다음 시도로 이어질 실마리를 남기려고 만들었다.</div>
@@ -889,7 +834,6 @@
 <script>
 (function(){
   var boxes = document.querySelectorAll('.mod__deliverable .chk');
-  var note = document.getElementById('progressNote');
   var KEY = 'desk-agent-lab-progress';
 
   function safeGet(){
@@ -902,15 +846,12 @@
   }
   function update(){
     var state = {};
-    var done = 0;
     boxes.forEach(function(b){
       state[b.id] = b.checked;
-      if (b.checked) done++;
       var mod = b.closest('.mod');
       if (mod) mod.classList.toggle('is-done', b.checked);
     });
     safeSet(state);
-    if (note) note.textContent = '진행 ' + done + ' / ' + boxes.length + ' 단계 완료';
   }
 
   var saved = safeGet();
