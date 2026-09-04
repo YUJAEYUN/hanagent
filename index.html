@@ -225,12 +225,6 @@
     text-transform:uppercase;
   }
   .mod__title{font-size:19px;font-weight:600;margin-top:4px;}
-  .mod__time{
-    font-family:"IBM Plex Mono",monospace;
-    font-size:12px;
-    color:var(--ink-soft);
-    white-space:nowrap;
-  }
   .mod__desc{margin-top:10px;font-size:15px;color:var(--ink-soft);max-width:60ch;}
   .mod__deliverable{
     margin-top:14px;
@@ -530,7 +524,6 @@
               <span class="mod__label">관찰</span>
               <div class="mod__title">업무 지도 그리기</div>
             </div>
-            <span class="mod__time mono">약 30분</span>
           </div>
           <p class="mod__desc">
             하루 업무를 시간대별로 적어본다. 그중 "반복적이고 형식이 정해져 있으며 시간이 드는" 일을
@@ -563,7 +556,6 @@
               <span class="mod__label">설계</span>
               <div class="mod__title">목표·입력·출력 한 장으로 정리하기</div>
             </div>
-            <span class="mod__time mono">약 40분</span>
           </div>
           <p class="mod__desc">
             01단계에서 고른 업무 하나를 "무엇을 받아서 무엇을 내놓는지"로 명확히 쓴다. 신입
@@ -621,7 +613,6 @@
               <span class="mod__label">실습</span>
               <div class="mod__title">Claude Code로 에이전트 체험하기</div>
             </div>
-            <span class="mod__time mono">약 50분</span>
           </div>
           <p class="mod__desc">
             02단계에서 쓴 지시서를 채팅창에 붙여넣고 답을 한 번 받는 것으로 끝내면, 그건 챗봇을
@@ -725,7 +716,6 @@
               <span class="mod__label">검증</span>
               <div class="mod__title">틀렸을 때를 미리 잡아두기</div>
             </div>
-            <span class="mod__time mono">약 30분</span>
           </div>
           <p class="mod__desc">
             AI는 만능이 아니다. 형식이 정해진 반복 요약이나 데이터 정리는 에이전트에게 맡겨도
@@ -758,7 +748,6 @@
               <span class="mod__label">확장</span>
               <div class="mod__title">다른 업무로 넓히기</div>
             </div>
-            <span class="mod__time mono">약 20분</span>
           </div>
           <p class="mod__desc">
             완성한 에이전트 하나를 동료 한 명에게 보여주고 피드백을 받는다. 그다음 01단계에서
@@ -769,6 +758,17 @@
             지시서를 거의 그대로 재사용할 수 있어 가장 빠르게 넓혀간다. 판단이 많이 필요한
             업무는 지시서 쓰기가 더 어려우니 뒤로 미뤄도 된다. 이렇게 큰 전환 없이 작게 계속
             넓혀가는 방식이다.
+          </p>
+          <p class="mod__desc">
+            다섯 단계 다음도 궁금하다면 방향만 살짝 짚어본다. 매번 지시서를 복사해 붙여넣는
+            대신 CLAUDE.md나 AGENTS.md 같은 파일로 작업 폴더에 저장해두면, Claude Code가 그
+            폴더에서 일할 때마다 자동으로 불러온다. 사내 시스템이나 데이터베이스를 MCP로
+            연결하면 파일을 옮기지 않고도 바로 처리할 수 있다. 여기서 더 가면, 반복 업무를
+            처리하는 스크립트 자체를 Claude Code에게 짜달라고 할 수도 있다. 예를 들어 "영수증
+            폴더를 스캔해서 매달 지출 요약 파일을 만드는 스크립트"를 만들어두면, 업무 제약조건이
+            자연어 지시서가 아니라 코드 안에 들어가고 그다음부터는 에이전트를 부르지 않고
+            스크립트만 실행하면 된다. 다만 이건 이 학습문서의 범위를 넘어서는 이야기이고, 지금은
+            다섯 단계를 한 번 통과해보는 것만으로 충분하다.
           </p>
           <div class="mod__deliverable">
             <input type="checkbox" class="chk" id="d5"><label for="d5">산출물: 다음에 시도할 업무 1개 + 공유할 동료 1명</label>
