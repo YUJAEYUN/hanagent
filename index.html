@@ -114,6 +114,8 @@
   .faq-item .q::before{content:"Q";margin-right:12px;color:var(--hana);font-size:1.125rem}
   .faq-item .a{color:var(--ink-soft);font-size:1rem}
 
+  .repo-link{display:flex;align-items:center;justify-content:space-between;gap:16px;width:fit-content;max-width:100%;min-height:48px;margin-top:24px;padding:12px 18px;border:1px solid var(--line-strong);border-radius:4px;background:var(--hana-mint);color:var(--hana-deep);font-size:1rem;font-weight:500;overflow-wrap:anywhere;text-decoration:none}.repo-link:hover{text-decoration:underline}.repo-link span{flex:none}
+
   @media(max-width:760px){
     .wrap{padding:0 24px}.brand-bar{min-height:80px;padding:16px 0}.brand__logo{width:144px}.brand__service,.brand__divider{display:none}
     header.hero{padding:40px 0 44px}.memo-meta{margin-bottom:24px}.memo-meta span:not(:last-child)::after{margin:0 10px}
@@ -158,8 +160,8 @@
     </div>
     <h1 class="title"><em>업무 하나</em>,<br>에이전트에게 맡겨보기</h1>
     <p class="lede">
-      업무 중 반복되는 일 하나를 골라, Claude로 실제 동작하는 에이전트를 처음부터 끝까지
-      만들어보는 다섯 단계 방법론이다. 특정 업무 하나에 묶이지 않도록 방법 자체에 집중해서
+      업무 중 반복되는 일 하나를 골라, Claude Code 같은 실행 환경을 내 업무에 맞게 설정하고
+      활용해보는 다섯 단계 방법론이다. 특정 업무 하나에 묶이지 않도록 방법 자체에 집중해서
       썼고, 02·03단계에는 직접 따라 해볼 수 있는 가상 예시를 토글로 붙여뒀다.
     </p>
     <div class="pull">
@@ -199,9 +201,13 @@
         코드를 다루는 도구 안에서만 이게 가능했지만, 지금은 파일과 명령을 다루는 harness가
         다양해지면서 개발자가 아닌 사람도 같은 방식으로 업무를 맡길 수 있게 됐고, 이 능력은
         지금도 계속 좋아지고 있다.</p>
-        <p><b style="color:var(--teal-ink)">이 학습문서에서 안 다루는 것.</b> 최신 논문, 모델 성능 비교, 코딩 이론은
-        다루지 않는다. 대신 내 팀원에게 업무를 맡긴다는 마음으로 지시서를 쓰고, 결과를 확인하고,
-        고쳐나가는 데 집중한다. 팀장이 팀원이 일을 잘 해내도록 환경을 갖춰주는 것과 같은
+        <p><b style="color:var(--teal-ink)">여기서 말하는 ‘에이전트 만들기’.</b> Claude Code 같은 실행 환경(harness)과
+        그 안에서 쓰는 모델은 이미 제공되는 것을 활용한다. 여기에 지침으로 작업 규칙을 정하고,
+        스킬로 업무 절차를 재사용하며, 필요할 때 MCP로 도구와 데이터를 연결한다.
+        목적은 이렇게 기존 실행 환경을 내 업무에 맞게 설정하고 활용하는 것이다.
+        에이전트 내부에서 돌아가는 처리 과정이나 아키텍처를 밑바닥부터 개발하는 법은 다루지 않는다.</p>
+        <p>내 팀원에게 업무를 맡긴다는 마음으로 지시서를 쓰고, 결과를 확인하고, 고쳐나가는 데 집중한다.
+        팀장이 팀원이 일을 잘 해내도록 환경을 갖춰주는 것과 같은
         맥락이다. 에이전트가 잘하는 것과 못하는 것을 먼저 파악해서, 잘하는 일은 맡기는 범위를
         넓혀주고, 못하는 일은 업무를 작게 쪼개서 나눠 맡기거나 중간중간 확인과 피드백을 끼워
         넣어 그 안에서도 해낼 수 있게 만들어주는 것, 그게 에이전트를 잘 쓰는 방법이다.</p>
@@ -246,8 +252,8 @@
 <section>
   <div class="wrap">
     <span class="eyebrow">만드는 과정 · 5단계</span>
-    <h2 class="h2">에이전트를 만들어가는 과정</h2>
-    <p class="section-lede">에이전트 하나를 처음부터 끝까지 만드는 다섯 단계다. 각 단계는 이전 단계의 결과물을 그대로 이어받아서, 앞 단계로 되돌아가지 않고 쭉 진행할 수 있다.</p>
+    <h2 class="h2">내 업무에 맞게 에이전트를 활용하는 과정</h2>
+    <p class="section-lede">기존 실행 환경을 바탕으로 업무 하나를 에이전트에게 맡기고, 결과를 확인하는 다섯 단계다. 각 단계는 이전 단계의 결과물을 그대로 이어받아서, 앞 단계로 되돌아가지 않고 쭉 진행할 수 있다.</p>
 
     <div class="timeline">
       <div class="mod">
@@ -572,14 +578,33 @@
         <div class="q">첫 시도에서 실패하면 어떻게 하나?</div>
         <div class="a">지시서를 한 번에 완성하는 사람은 없다. 03단계는 원래 여러 번 고치면서 완성해가도록 만든 과정이다.</div>
       </div>
-      <div class="faq-item">
-        <div class="q">회사 데이터를 넣어도 안전한가?</div>
-        <div class="a">이 학습문서는 사내 데이터 취급 정책을 대체하지 않는다. 02·03단계 토글에 들어 있는 자료는 전부 가상 데이터이며, 실제 고객·거래 데이터 사용 전에는 컴플라이언스 확인을 거친다.</div>
-      </div>
     </div>
   </div>
 </section>
 
+
+<section aria-labelledby="skills-title">
+  <div class="wrap">
+    <span class="eyebrow">실제 스킬 살펴보기</span>
+    <h2 class="h2" id="skills-title">스킬의 핵심도 글로 쓴 지시서다</h2>
+    <p class="section-lede">
+      Claude Code 같은 실행 환경(harness)에서 사용할 수 있는 스킬이 어떻게 생겼는지 궁금하다면,
+      Anthropic이 공개한 공식 저장소를 열어보자. 문서 작성, PDF 처리, 디자인 등 여러 작업을 위한
+      스킬을 살펴볼 수 있다.
+    </p>
+    <a class="repo-link" href="https://github.com/anthropics/skills" target="_blank" rel="noopener noreferrer" aria-label="Anthropic 공식 스킬 저장소 GitHub에서 보기 (새 탭)">github.com/anthropics/skills <span aria-hidden="true">↗</span></a>
+    <p class="section-lede">
+      저장소의 <b>skills</b> 폴더에서 관심 있는 스킬을 고른 뒤 <b>SKILL.md</b> 파일을 열어보자.
+      각 스킬의 핵심 지시사항은 마크다운(<b>.md</b>) 파일에 적혀 있다.
+      프롬프트를 쓰듯 해야 할 일, 작업 순서, 지켜야 할 규칙과 예시를 글로 정리한 것이다.
+    </p>
+    <p class="section-lede">
+      앞에서 만든 지시서도 이렇게 파일로 저장해두면, 에이전트가 필요할 때 읽고 따르는 스킬로
+      발전시킬 수 있다. 작업에 따라 실행 스크립트나 참고 자료가 함께 들어가기도 하지만,
+      시작은 우리가 직접 쓸 수 있는 지시서다.
+    </p>
+  </div>
+</section>
 
 <script>
 (function(){
